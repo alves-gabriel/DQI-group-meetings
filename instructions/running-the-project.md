@@ -225,7 +225,7 @@ Calendar, next-meetings, and archive entries link to the event page only when th
 
 Layouts are reusable page shells.
 
-- `_layouts/default.html` contains the shared HTML document structure, navigation, and stylesheet link.
+- `_layouts/default.html` contains the shared HTML document structure, header logo, navigation, and stylesheet link.
 - `_layouts/event.html` controls how each individual meeting page looks.
 
 Event Markdown files automatically use the `event` layout because `_config.yml` sets that default for the `events` collection.
@@ -239,6 +239,14 @@ Includes are small reusable content snippets.
 ### `assets/css/styles.css`
 
 This file controls the visual design: layout, spacing, colors, calendar styling, event rows, tags, and responsive behavior.
+
+### `assets/img/trinity-college-dublin-logo.svg`
+
+This is the Trinity College Dublin logo displayed in the shared site header. It is shown as a non-linked image beside the site title.
+
+### `assets/img/site-thumbnail.svg`
+
+This is the browser tab icon, also called the favicon. `_layouts/default.html` links to it from the page `<head>`.
 
 ### `assets/js/calendar.js`
 

@@ -39,16 +39,24 @@ a:hover {
 }
 
 .site-nav {
-  max-width: 1040px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 16px 24px;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(160px, 240px) minmax(0, 1fr) minmax(120px, 240px);
   align-items: center;
-  justify-content: space-between;
   gap: 20px;
 }
 
+.site-logo {
+  width: 190px;
+  max-width: 100%;
+  height: auto;
+}
+
 .site-title {
+  justify-self: center;
+  text-align: center;
   font-weight: 700;
   color: var(--text);
 }
@@ -56,6 +64,7 @@ a:hover {
 .nav-links {
   display: flex;
   gap: 16px;
+  justify-self: end;
 }
 
 .page {
@@ -497,7 +506,12 @@ a.calendar-event:hover {
   }
 
   .site-nav {
-    flex-direction: column;
+    justify-items: start;
+  }
+
+  .site-logo {
+    width: 180px;
+    max-width: 80vw;
   }
 
   .archive-year .event-list {

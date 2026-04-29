@@ -4,11 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+  <link rel="icon" href="{{ '/assets/img/site-thumbnail.svg' | relative_url }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 </head>
 <body>
   <header class="site-header">
     <nav class="site-nav" aria-label="Main navigation">
+      <img class="site-logo" src="{{ '/assets/img/trinity-college-dublin-logo.svg' | relative_url }}" alt="Trinity College Dublin">
       <a class="site-title" href="{{ '/' | relative_url }}">Dynamics of Quantum Information - Group Meetings Website</a>
       <div class="nav-links">
         <a href="{{ '/' | relative_url }}">Calendar</a>
