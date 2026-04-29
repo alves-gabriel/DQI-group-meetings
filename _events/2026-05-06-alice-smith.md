@@ -2,6 +2,7 @@
 title: Tensor Networks Discussion
 date: 2026-05-06
 speaker: Alice Smith
+room: 1D1
 tags:
   - tensor networks
   - numerics

@@ -54,6 +54,9 @@ title: Calendar
       {% if upcoming_event.speaker %}
         <p>{{ upcoming_event.speaker }}</p>
       {% endif %}
+      {% if upcoming_event.room %}
+        <p><strong>Room:</strong> {{ upcoming_event.room }}</p>
+      {% endif %}
     </article>
   {% else %}
     <p>No upcoming events are listed yet.</p>

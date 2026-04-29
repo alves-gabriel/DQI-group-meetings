@@ -6,6 +6,8 @@
   --line: #d9e2ec;
   --accent: #16697a;
   --accent-soft: #e7f4f6;
+  --upcoming: #287d4f;
+  --upcoming-soft: #e9f6ef;
   --calendar-link: rgb(65 105 225 / 82%);
   --calendar-link-hover: rgb(65 105 225 / 95%);
 }
@@ -87,6 +89,38 @@ a:hover {
   margin-bottom: 8px;
   color: var(--muted);
   font-weight: 700;
+}
+
+.archive-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.archive-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+}
+
+.legend-swatch.is-upcoming {
+  border-color: #a9d8bd;
+  background: var(--upcoming-soft);
+}
+
+.legend-swatch.is-past {
+  border-color: var(--line);
+  background: var(--panel);
 }
 
 .intro-copy {
@@ -290,6 +324,10 @@ a.calendar-event:hover {
   gap: 12px;
 }
 
+.archive-year .event-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .event-row {
   display: grid;
   grid-template-columns: 88px minmax(0, 1fr);
@@ -298,6 +336,16 @@ a.calendar-event:hover {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
+}
+
+.event-row.is-upcoming {
+  border-color: #a9d8bd;
+  background: var(--upcoming-soft);
+}
+
+.event-row.is-upcoming a,
+.event-row.is-upcoming .event-title-static {
+  color: var(--upcoming);
 }
 
 .event-meta {
@@ -368,6 +416,10 @@ a.calendar-event:hover {
 
   .site-nav {
     flex-direction: column;
+  }
+
+  .archive-year .event-list {
+    grid-template-columns: 1fr;
   }
 
   .calendar-grid {
