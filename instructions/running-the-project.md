@@ -309,6 +309,83 @@ The CSS, calendar JavaScript, and archive filter JavaScript links include a buil
 
 This file powers the archive filters. It populates the year dropdown from the rendered archive rows, applies search and select filters, hides empty year sections, and shows a "No matching events" message when every event is filtered out.
 
+### `assets/js/obsidian-callouts.js`
+
+This file makes Obsidian-style callouts readable on the Jekyll site.
+
+Use this syntax in event Markdown:
+
+```markdown
+> [!note|highlight-blue] Key Idea
+> Inline math works: $E = mc^2$
+>
+> Display math works too:
+> $$
+> E = mc^2
+> $$
+>
+> Normal **Markdown** works here.
+```
+
+This is still valid Markdown. Without JavaScript it appears as a normal blockquote, so the text remains readable. In the Jekyll site, the browser first receives a normal blockquote from Jekyll. Then `assets/js/obsidian-callouts.js` finds blockquotes whose first line starts with `[!...]` and converts them into styled callout boxes.
+
+The preferred syntax is:
+
+```markdown
+> [!note|highlight-blue] Title
+```
+
+The `note` part keeps the same syntax working in Obsidian. The `highlight-blue` part is metadata used for custom color styling.
+
+Supported highlight metadata values are:
+
+```markdown
+> [!note|highlight-red] Title
+> [!note|highlight-green] Title
+> [!note|highlight-turquoise] Title
+> [!note|highlight-purple] Title
+> [!note|highlight-blue] Title
+```
+
+Every line inside the callout must start with `>`, including blank lines and `$$` display-math delimiters.
+
+The visual styling lives in `assets/css/styles.css` under the `.obsidian-callout` selectors. To add another color, add a new metadata class there, for example:
+
+```css
+.obsidian-highlight-orange {
+  --callout-color: 230, 126, 34;
+}
+```
+
+Then use it in Markdown:
+
+```markdown
+> [!note|highlight-orange] Example
+> $a^2 + b^2 = c^2$
+```
+
+This feature is a sensitive compatibility point. It depends on Jekyll rendering the callout as a normal blockquote, then a small browser script converting that blockquote into styled HTML. It also depends on the CSS variables in `assets/css/styles.css` and MathJax in `_layouts/default.html`.
+
+If callouts become plain blockquotes, check that `assets/js/obsidian-callouts.js` is loading. If LaTeX works but colors do not, check the CSS first. The callout colors intentionally use `rgba(var(--callout-color), 0.1)` style syntax; changing this to newer `rgb(... / ...)` syntax may break colors in some browsers.
+
+### MathJax
+
+`_layouts/default.html` loads MathJax v3 from jsDelivr. This lets TeX expressions render in event notes, including inside converted Obsidian callouts.
+
+Inline math:
+
+```markdown
+$E = mc^2$
+```
+
+Display math:
+
+```markdown
+$$
+E = mc^2
+$$
+```
+
 ## Adding a New Meeting
 
 Create a new file in `_events/`.

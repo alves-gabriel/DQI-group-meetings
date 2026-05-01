@@ -548,6 +548,56 @@ a.calendar-event:hover {
   max-width: 720px;
 }
 
+.obsidian-callout {
+  --callout-color: 65, 105, 225;
+  margin: 1rem 0;
+  padding: 0;
+  border: 1px solid rgba(var(--callout-color), 0.35);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(var(--callout-color), 0.1);
+}
+
+.obsidian-highlight-red {
+  --callout-color: 179, 0, 0;
+}
+
+.obsidian-highlight-green {
+  --callout-color: 19, 130, 7;
+}
+
+.obsidian-highlight-turquoise {
+  --callout-color: 40, 154, 164;
+}
+
+.obsidian-highlight-purple {
+  --callout-color: 120, 81, 169;
+}
+
+.obsidian-highlight-blue {
+  --callout-color: 65, 105, 225;
+}
+
+.obsidian-callout-title {
+  padding: 0.35rem 1rem;
+  color: #fff;
+  background: rgba(var(--callout-color), 0.7);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.obsidian-callout-content {
+  padding: 1rem;
+}
+
+.obsidian-callout-content > :first-child {
+  margin-top: 0;
+}
+
+.obsidian-callout-content > :last-child {
+  margin-bottom: 0;
+}
+
 @media (max-width: 760px) {
   .site-nav,
   .intro,

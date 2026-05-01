@@ -59,4 +59,74 @@ This repository contains a static Jekyll site for DQI group meeting logs.
 - The shared header displays a non-linked Trinity College Dublin SVG logo from `assets/img/trinity-college-dublin-logo.svg` next to the site title. The top-right navigation has a `Search` link pointing to the archive page.
 - The browser tab icon uses `assets/img/site-thumbnail.svg`.
 - CSS, calendar JavaScript, and archive filter JavaScript asset URLs include a `?v={{ site.time | date: '%s' }}` cache-busting query string so GitHub Pages/browser caches pick up visual changes after each build.
+- Obsidian-style callouts in Markdown are supported in Jekyll pages with `assets/js/obsidian-callouts.js` and matching CSS in `assets/css/styles.css`. Use the Obsidian-compatible syntax `> [!note|highlight-blue] Title` followed by quoted Markdown lines. Jekyll first renders this as a normal blockquote; the browser script converts matching blockquotes into styled `.obsidian-callout` blocks. The same syntax remains readable in plain Markdown and works in Obsidian.
+- The site layout loads MathJax v3 from jsDelivr so TeX inside event notes and converted Obsidian callouts can render in the browser.
 - Event content can be validated locally with `ruby scripts/validate_events.rb`. The script checks required front matter, filename/date consistency, optional tag/time formatting, missing local file attachments, missing local thumbnails, and missing rooms on future events.
+
+## Obsidian Callout Implementation Details
+
+This is a sensitive compatibility area. The syntax must work in Obsidian, remain readable as plain Markdown, and render nicely in the Jekyll site.
+
+Use this Markdown form:
+
+```markdown
+> [!note|highlight-blue] Title
+> Markdown and $LaTeX$ content.
+```
+
+Do not switch this to raw HTML `<div>` boxes. Raw HTML boxes break Obsidian Markdown/LaTeX rendering.
+
+Jekyll/Kramdown renders that syntax as a normal `<blockquote>` whose first paragraph starts with the literal text `[!note|highlight-blue] Title`. The client-side file `assets/js/obsidian-callouts.js` then:
+
+- finds every `blockquote`;
+- checks the first paragraph text against `/^\s*\[!([A-Za-z0-9_-]+)(?:\|([^\]]+))?\]\s*([^\n\r]*)\r?\n?/`;
+- removes the marker from the paragraph;
+- creates `.obsidian-callout-title` and `.obsidian-callout-content`;
+- adds classes such as `.obsidian-callout` and `.obsidian-highlight-blue`;
+- stores `data-callout` and `data-callout-metadata` for debugging.
+
+The script intentionally uses broadly compatible browser APIs: `querySelectorAll`, `textContent`, `classList`, `dataset`, `document.addEventListener`, and `window.addEventListener`. Avoid fragile dependencies on `NodeFilter`, `TreeWalker`, or Markdown-renderer-specific generated markup unless you test them in the browser. A previous version using `document.createTreeWalker(..., NodeFilter.SHOW_TEXT)` was more fragile and made diagnosis harder.
+
+The CSS in `assets/css/styles.css` must use classic comma-based color syntax with the comma-separated CSS variable:
+
+```css
+rgba(var(--callout-color), 0.1)
+```
+
+Do not use modern slash syntax here:
+
+```css
+rgb(var(--callout-color) / 10%)
+```
+
+That form did not work with the current `--callout-color: 65, 105, 225` values in the tested browser, causing converted callouts to have no visible colors or borders.
+
+The final intended visual style has:
+
+- a thin normal border around the whole callout;
+- no thick left accent border;
+- a colored title bar;
+- a pale background.
+
+## Callout Troubleshooting
+
+If callouts stop showing colors or styling:
+
+1. Confirm the generated page loads `assets/js/obsidian-callouts.js` and `assets/css/styles.css` from `_layouts/default.html`.
+2. Hard-refresh the browser because these assets are cache-busted by `?v={{ site.time | date: '%s' }}` but a running local page may still hold old JS/CSS.
+3. In the browser console, check `document.querySelectorAll('.obsidian-callout').length`.
+4. If the count is zero, inspect the generated HTML. Jekyll should have produced blockquotes whose first paragraph starts with `[!note|highlight-blue]`.
+5. If the count is nonzero but there are no colors, inspect CSS first. The likely culprit is incompatible color syntax or missing `.obsidian-highlight-*` rules.
+6. If LaTeX renders but colors do not, MathJax is working and the issue is almost certainly the callout JavaScript/CSS path.
+7. If colors work but LaTeX does not, inspect the MathJax config and script in `_layouts/default.html`.
+
+For temporary manual testing, create an uncommitted `callout-test.md` page and remove it before handoff or commit. A useful debug trick is to add a temporary badge that displays `attr(data-obsidian-callouts)` from the `<html>` element; `assets/js/obsidian-callouts.js` sets that value after each transform pass.
+
+This implementation can break if:
+
+- Jekyll or Kramdown changes how blockquotes are rendered;
+- the Markdown is converted by another renderer before this script sees it;
+- browser compatibility changes around `classList`, `dataset`, or CSS custom properties;
+- a strict Content Security Policy blocks inline MathJax config or external scripts from jsDelivr;
+- MathJax loading order changes;
+- a future refactor removes the script or CSS links from `_layouts/default.html`.
