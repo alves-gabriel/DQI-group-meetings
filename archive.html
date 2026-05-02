@@ -85,18 +85,18 @@ permalink: /archive/
           <div>
             <h3>
               {% if event_has_details %}
-                <a href="{{ event.url | relative_url }}">{{ event.title }}</a>
+                <a href="{{ event.url | relative_url }}">{{ event.title | escape }}</a>
               {% else %}
-                <span class="event-title-static">{{ event.title }}</span>
+                <span class="event-title-static">{{ event.title | escape }}</span>
               {% endif %}
             </h3>
             {% if event.speaker %}
-              <p class="event-speaker">{{ event.speaker }}</p>
+              <p class="event-speaker">{{ event.speaker | escape }}</p>
             {% endif %}
             {% if event.tags %}
               <div class="tag-row">
                 {% for tag in event.tags %}
-                  <button class="tag tag-button" type="button" data-tag="{{ tag | escape }}" aria-pressed="false">{{ tag }}</button>
+                  <button class="tag tag-button" type="button" data-tag="{{ tag | escape }}" aria-pressed="false">{{ tag | escape }}</button>
                 {% endfor %}
               </div>
             {% endif %}

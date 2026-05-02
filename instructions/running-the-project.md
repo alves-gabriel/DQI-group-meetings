@@ -172,7 +172,7 @@ This page lists all meetings grouped by year.
 
 It uses the same `_events/` data, but presents it as a browsable archive instead of a calendar.
 
-The archive also includes client-side filters for text search, status, year, and clicked tags. Search covers titles, speakers, and tags. Tag pills in each archive row are buttons; clicking one toggles an exact tag filter that combines with the other controls. Jekyll renders `data-*` attributes on each archive row, and `assets/js/archive-filters.js` reads those attributes to show or hide matching events in the browser.
+The archive also includes client-side filters for text search, status, year, and selected tags. Search covers titles, speakers, and tags. Tag pills in each archive row are buttons; clicking a tag toggles that tag as selected. Multiple selected tags combine with boolean AND logic and also combine with the other controls. Jekyll renders `data-*` attributes on each archive row, and `assets/js/archive-filters.js` reads those attributes to show or hide matching events in the browser.
 
 ### `_events/`
 
@@ -307,7 +307,7 @@ The CSS, calendar JavaScript, and archive filter JavaScript links include a buil
 
 ### `assets/js/archive-filters.js`
 
-This file powers the archive filters. It populates the year dropdown from the rendered archive rows, applies search, select, and clicked-tag filters, hides empty year sections, and shows a "No matching events" message when every event is filtered out.
+This file powers the archive filters. It populates the year dropdown from the rendered archive rows, applies search, select, and selected-tag filters, hides empty year sections, and shows a "No matching events" message when every event is filtered out.
 
 ### `assets/js/obsidian-callouts.js`
 

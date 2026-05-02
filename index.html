@@ -48,24 +48,24 @@ title: Calendar
           <div>
             <h3>
               {% if event_has_details %}
-                <a href="{{ event.url | relative_url }}">{{ event.title }}</a>
+                <a href="{{ event.url | relative_url }}">{{ event.title | escape }}</a>
               {% else %}
-                <span class="event-title-static">{{ event.title }}</span>
+                <span class="event-title-static">{{ event.title | escape }}</span>
               {% endif %}
             </h3>
             {% if event.speaker %}
-              <p class="event-speaker">{{ event.speaker }}</p>
+              <p class="event-speaker">{{ event.speaker | escape }}</p>
             {% endif %}
             {% if upcoming_count == 0 %}
               {% if event.time %}
-                <p><strong>Time:</strong> {{ event.time }}</p>
+                <p><strong>Time:</strong> {{ event.time | escape }}</p>
               {% endif %}
               {% if event.room %}
-                <p><strong>Room:</strong> {{ event.room }}</p>
+                <p><strong>Room:</strong> {{ event.room | escape }}</p>
               {% endif %}
             {% endif %}
             {% if event.additional_notes %}
-              <p><strong>Notes:</strong> {{ event.additional_notes }}</p>
+              <p><strong>Notes:</strong> {{ event.additional_notes | escape }}</p>
             {% endif %}
           </div>
         </article>

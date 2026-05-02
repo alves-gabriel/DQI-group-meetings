@@ -3,7 +3,7 @@
   const sections = Array.from(document.querySelectorAll(".archive-year"));
   const tagButtons = Array.from(document.querySelectorAll(".tag-button"));
   const emptyMessage = document.getElementById("archive-empty");
-  let activeTag = "";
+  const activeTags = new Set();
   const controls = {
     search: document.getElementById("archive-search"),
     status: document.getElementById("archive-status"),
@@ -49,18 +49,19 @@
     const search = normalize(controls.search.value);
     const status = controls.status.value;
     const year = controls.year.value;
+    const tags = rowTags(row);
 
     return (
       (!search || (row.dataset.search || "").includes(search)) &&
       (!status || row.dataset.status === status) &&
       (!year || row.dataset.year === year) &&
-      (!activeTag || rowTags(row).includes(activeTag))
+      Array.from(activeTags).every((tag) => tags.includes(tag))
     );
   }
 
   function updateTagButtons() {
     tagButtons.forEach((button) => {
-      const isActive = normalize(button.dataset.tag) === activeTag;
+      const isActive = activeTags.has(normalize(button.dataset.tag));
       button.classList.toggle("is-active", isActive);
       button.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
@@ -105,7 +106,11 @@
   tagButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const selectedTag = normalize(button.dataset.tag);
-      activeTag = activeTag === selectedTag ? "" : selectedTag;
+      if (activeTags.has(selectedTag)) {
+        activeTags.delete(selectedTag);
+      } else {
+        activeTags.add(selectedTag);
+      }
       updateSections();
     });
   });
@@ -114,7 +119,7 @@
     controls.search.value = "";
     controls.status.value = "";
     controls.year.value = "";
-    activeTag = "";
+    activeTags.clear();
     updateSections();
     controls.search.focus();
   });
