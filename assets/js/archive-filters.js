@@ -1,7 +1,9 @@
 (function () {
   const rows = Array.from(document.querySelectorAll(".event-row"));
   const sections = Array.from(document.querySelectorAll(".archive-year"));
+  const tagButtons = Array.from(document.querySelectorAll(".tag-button"));
   const emptyMessage = document.getElementById("archive-empty");
+  let activeTag = "";
   const controls = {
     search: document.getElementById("archive-search"),
     status: document.getElementById("archive-status"),
@@ -36,6 +38,13 @@
     });
   }
 
+  function rowTags(row) {
+    return (row.dataset.tags || "")
+      .split("|")
+      .map(normalize)
+      .filter(Boolean);
+  }
+
   function rowMatches(row) {
     const search = normalize(controls.search.value);
     const status = controls.status.value;
@@ -44,8 +53,17 @@
     return (
       (!search || (row.dataset.search || "").includes(search)) &&
       (!status || row.dataset.status === status) &&
-      (!year || row.dataset.year === year)
+      (!year || row.dataset.year === year) &&
+      (!activeTag || rowTags(row).includes(activeTag))
     );
+  }
+
+  function updateTagButtons() {
+    tagButtons.forEach((button) => {
+      const isActive = normalize(button.dataset.tag) === activeTag;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
   }
 
   function updateSections() {
@@ -69,6 +87,8 @@
     if (emptyMessage) {
       emptyMessage.hidden = visibleRows > 0;
     }
+
+    updateTagButtons();
   }
 
   addOptions(controls.year, uniqueValues("year").reverse());
@@ -82,11 +102,22 @@
     control.addEventListener("change", updateSections);
   });
 
+  tagButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const selectedTag = normalize(button.dataset.tag);
+      activeTag = activeTag === selectedTag ? "" : selectedTag;
+      updateSections();
+    });
+  });
+
   controls.reset.addEventListener("click", () => {
     controls.search.value = "";
     controls.status.value = "";
     controls.year.value = "";
+    activeTag = "";
     updateSections();
     controls.search.focus();
   });
+
+  updateTagButtons();
 })();

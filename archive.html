@@ -96,7 +96,7 @@ permalink: /archive/
             {% if event.tags %}
               <div class="tag-row">
                 {% for tag in event.tags %}
-                  <span class="tag">{{ tag }}</span>
+                  <button class="tag tag-button" type="button" data-tag="{{ tag | escape }}" aria-pressed="false">{{ tag }}</button>
                 {% endfor %}
               </div>
             {% endif %}

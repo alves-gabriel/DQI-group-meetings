@@ -540,6 +540,28 @@ a.calendar-event:hover {
   font-weight: 700;
 }
 
+.tag-button {
+  appearance: none;
+  margin: 0;
+  min-height: auto;
+  border: 0;
+  font-family: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+.tag-button:hover,
+.tag-button:focus-visible {
+  color: #fff;
+  background: var(--accent);
+  text-decoration: none;
+}
+
+.tag-button.is-active {
+  color: #fff;
+  background: #4169e1;
+}
+
 .back-link {
   display: inline-block;
   margin-bottom: 20px;
