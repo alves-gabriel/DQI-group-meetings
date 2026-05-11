@@ -6,6 +6,7 @@ This repository contains a static Jekyll site for DQI group meeting logs.
 
 - The site is deployed with GitHub Pages from the `main` branch and `/ (root)`.
 - Expected public URL: `https://dqi-group-meetings.github.io/`.
+- After making content, instruction, layout, style, or behavior changes, always run a local Jekyll server for testing before handoff when the environment permits it. Use `bundle exec jekyll serve --host 127.0.0.1` and report the local URL.
 - `_config.yml` sets:
   - `url: "https://dqi-group-meetings.github.io"`
   - `baseurl: ""`
